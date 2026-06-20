@@ -35,13 +35,14 @@ export async function launchSessionHelper(platform, onStatusChange) {
     fs.mkdirSync(userDir, { recursive: true });
   }
 
-  onStatusChange({ status: 'opening', message: 'Launching browser...' });
-
   try {
+    onStatusChange({ status: 'opening', message: 'Launching browser...' });
     const context = await chromium.launchPersistentContext(userDir, {
       headless: false,
+      channel: 'chrome',
       viewport: null,
-      args: ['--start-maximized'],
+      ignoreDefaultArgs: ['--enable-automation'],
+      args: ['--start-maximized', '--disable-blink-features=AutomationControlled'],
       slowMo: 50
     });
 

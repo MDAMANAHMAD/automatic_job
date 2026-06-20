@@ -8,8 +8,10 @@ export async function searchJobs(keywords, location, profile) {
   const sessionDir = getSessionDir('indeed');
   const browser = await chromium.launchPersistentContext(sessionDir, {
     headless: false,
+    channel: 'chrome',
     viewport: null,
-    args: ['--start-maximized']
+    ignoreDefaultArgs: ['--enable-automation'],
+    args: ['--start-maximized', '--disable-blink-features=AutomationControlled']
   });
 
   const page = await browser.newPage();
@@ -95,8 +97,10 @@ export async function applyJob(job, profile) {
   const sessionDir = getSessionDir('indeed');
   const browser = await chromium.launchPersistentContext(sessionDir, {
     headless: false,
+    channel: 'chrome',
     viewport: null,
-    args: ['--start-maximized']
+    ignoreDefaultArgs: ['--enable-automation'],
+    args: ['--start-maximized', '--disable-blink-features=AutomationControlled']
   });
 
   const page = await browser.newPage();
