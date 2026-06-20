@@ -14,8 +14,8 @@ start "Job Agent Frontend" cmd /c "cd frontend && npm run dev"
 echo [3/3] Waiting for servers to initialize...
 timeout /t 3 /nobreak >nul
 
-echo Opening dashboard in your browser...
-start http://localhost:5173
+echo Opening dashboard in Chrome browser...
+start chrome http://localhost:5173
 
 echo.
 echo ========================================================
