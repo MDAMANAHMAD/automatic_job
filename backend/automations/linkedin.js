@@ -136,8 +136,8 @@ export async function applyJob(job, profile) {
       return { success: true, message: 'Already applied' };
     }
 
-    // Look for Easy Apply button with waiting
-    const easyApplySelector = 'button.jobs-apply-button, .jobs-apply-button, .jobs-s-apply button';
+    // Look for Easy Apply button with waiting (supports both button tags and link tags containing Easy Apply)
+    const easyApplySelector = 'a:has-text("Easy Apply"), button:has-text("Easy Apply"), .jobs-apply-button';
     try {
       await page.waitForSelector(easyApplySelector, { timeout: 8000 });
     } catch (e) {
