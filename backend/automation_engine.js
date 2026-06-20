@@ -141,13 +141,6 @@ async function runLoop(profile) {
     for (const job of pendingJobs) {
       if (!runnerState.isRunning) break;
 
-      const minScore = profile.preferences.minScore || 60;
-      if (job.matchScore < minScore) {
-        addLog(`Skipping "${job.title}" at ${job.company} (Match score ${job.matchScore}% < threshold ${minScore}%)`, 'info');
-        updateJobStatus(platform, job.jobId, 'Skipped', 'Match score below threshold');
-        continue;
-      }
-
       runnerState.currentJob = job;
       addLog(`Starting application process for "${job.title}" at ${job.company}...`, 'info');
 
