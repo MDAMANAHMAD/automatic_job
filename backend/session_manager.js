@@ -39,7 +39,6 @@ export async function launchSessionHelper(platform, onStatusChange) {
     onStatusChange({ status: 'opening', message: 'Launching browser...' });
     const context = await chromium.launchPersistentContext(userDir, {
       headless: false,
-      channel: 'chrome',
       viewport: null,
       ignoreDefaultArgs: ['--enable-automation'],
       args: ['--start-maximized', '--disable-blink-features=AutomationControlled'],

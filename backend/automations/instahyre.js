@@ -8,7 +8,6 @@ export async function searchJobs(keywords, location, profile) {
   const sessionDir = getSessionDir('instahyre');
   const browser = await chromium.launchPersistentContext(sessionDir, {
     headless: false,
-    channel: 'chrome',
     viewport: null,
     ignoreDefaultArgs: ['--enable-automation'],
     args: ['--start-maximized', '--disable-blink-features=AutomationControlled']
@@ -90,7 +89,6 @@ export async function applyJob(job, profile) {
   const sessionDir = getSessionDir('instahyre');
   const browser = await chromium.launchPersistentContext(sessionDir, {
     headless: false,
-    channel: 'chrome',
     viewport: null,
     ignoreDefaultArgs: ['--enable-automation'],
     args: ['--start-maximized', '--disable-blink-features=AutomationControlled']
