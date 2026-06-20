@@ -136,10 +136,11 @@ export async function applyJob(job, profile) {
       return { success: true, message: 'Already applied' };
     }
 
-    // Look for Easy Apply button with waiting (supports both button tags and link tags containing Easy Apply)
-    const easyApplySelector = 'a:has-text("Easy Apply"), button:has-text("Easy Apply"), .jobs-apply-button';
+    // Look for Easy Apply button with waiting (using modern Playwright Locators)
+    const easyApplySelector = 'button.jobs-apply-button, .jobs-apply-button, a:has-text("Easy Apply"), button:has-text("Easy Apply")';
+    const easyApplyBtn = page.locator(easyApplySelector).first();
     try {
-      await page.waitForSelector(easyApplySelector, { timeout: 8000 });
+      await easyApplyBtn.waitFor({ state: 'visible', timeout: 8000 });
     } catch (e) {
       // Double check already applied text in case it loaded slowly
       const reCheck = await page.evaluate(() => {
@@ -153,7 +154,7 @@ export async function applyJob(job, profile) {
       return { success: false, message: 'Easy Apply button not found (might require external application).' };
     }
 
-    await page.click(easyApplySelector);
+    await easyApplyBtn.click();
     await page.waitForTimeout(3000);
 
     // Multi-step form handler loop
