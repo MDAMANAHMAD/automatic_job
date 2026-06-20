@@ -53,6 +53,7 @@ export function saveJobs(jobsList) {
         appliedAt: null,
         discoveredAt: new Date().toISOString()
       });
+      existingKeys.add(key);
       newAddedCount++;
     }
   }
