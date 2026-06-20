@@ -136,9 +136,9 @@ export async function applyJob(job, profile) {
       return { success: true, message: 'Already applied' };
     }
 
-    // Look for Easy Apply button with waiting (using modern Playwright Locators)
+    // Look for Easy Apply button with waiting (using modern Playwright Locators filtered for visibility)
     const easyApplySelector = 'button.jobs-apply-button, .jobs-apply-button, a:has-text("Easy Apply"), button:has-text("Easy Apply")';
-    const easyApplyBtn = page.locator(easyApplySelector).first();
+    const easyApplyBtn = page.locator(easyApplySelector).filter({ visible: true }).first();
     try {
       await easyApplyBtn.waitFor({ state: 'visible', timeout: 8000 });
     } catch (e) {
