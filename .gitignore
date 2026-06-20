@@ -1,0 +1,33 @@
+# Dependency directories
+node_modules/
+jspm_packages/
+
+# Build outputs
+dist/
+build/
+.svelte-kit/
+.next/
+
+# Local databases and user profiles (security risk - contains API keys)
+backend/profile.json
+backend/jobs_db.json
+backend/resume_temp.pdf
+backend/sessions_data/
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# System Files
+.DS_Store
+Thumbs.db
