@@ -113,13 +113,30 @@ export async function applyJob(job, profile) {
   try {
     console.log(`Navigating to LinkedIn job page: ${job.link}`);
     await page.goto(job.link, { waitUntil: 'load', timeout: 60000 });
-    await page.waitForTimeout(3000);
+    // Check if already applied first
+    const alreadyApplied = await page.evaluate(() => {
+      const text = document.body.innerText;
+      return text.includes('Applied ') || text.includes('Applied\n') || text.includes('Application sent');
+    });
+    
+    if (alreadyApplied) {
+      return { success: true, message: 'Already applied' };
+    }
 
-    // Look for Easy Apply button
-    const easyApplySelector = 'button.jobs-apply-button';
-    const hasEasyApply = await page.$(easyApplySelector);
-    if (!hasEasyApply) {
-      return { success: false, message: 'Easy Apply button not found (might have already applied or direct company site).' };
+    // Look for Easy Apply button with waiting
+    const easyApplySelector = 'button.jobs-apply-button, .jobs-apply-button, .jobs-s-apply button';
+    try {
+      await page.waitForSelector(easyApplySelector, { timeout: 8000 });
+    } catch (e) {
+      // Double check already applied text in case it loaded slowly
+      const reCheck = await page.evaluate(() => {
+        const text = document.body.innerText;
+        return text.includes('Applied ') || text.includes('Applied\n') || text.includes('Application sent');
+      });
+      if (reCheck) {
+        return { success: true, message: 'Already applied' };
+      }
+      return { success: false, message: 'Easy Apply button not found (might require external application).' };
     }
 
     await page.click(easyApplySelector);
