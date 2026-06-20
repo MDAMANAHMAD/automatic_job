@@ -1,0 +1,11 @@
+{
+  "name": "auto-job-apply-root",
+  "version": "1.0.0",
+  "description": "Root workspace to launch both services",
+  "scripts": {
+    "start": "npx concurrently \"npm run dev --prefix backend\" \"npm run dev --prefix frontend\""
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
