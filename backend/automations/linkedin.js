@@ -113,6 +113,19 @@ export async function applyJob(job, profile) {
   try {
     console.log(`Navigating to LinkedIn job page: ${job.link}`);
     await page.goto(job.link, { waitUntil: 'load', timeout: 60000 });
+    await page.waitForTimeout(3000);
+
+    // Check if we are prompted to sign in
+    const signInPrompt = await page.evaluate(() => {
+      const text = document.body.innerText;
+      return text.includes('Sign in to apply') || text.includes('Sign in to LinkedIn') || document.querySelector('form.login__form') !== null;
+    });
+    
+    if (signInPrompt) {
+      await page.screenshot({ path: 'error_linkedin.png' });
+      return { success: false, message: 'Session expired or not logged in. Please reconnect your LinkedIn account in the Accounts tab.' };
+    }
+
     // Check if already applied first
     const alreadyApplied = await page.evaluate(() => {
       const text = document.body.innerText;
@@ -136,6 +149,7 @@ export async function applyJob(job, profile) {
       if (reCheck) {
         return { success: true, message: 'Already applied' };
       }
+      await page.screenshot({ path: 'error_linkedin.png' });
       return { success: false, message: 'Easy Apply button not found (might require external application).' };
     }
 
@@ -187,6 +201,12 @@ export async function applyJob(job, profile) {
     }
 
   } catch (err) {
+    try {
+      await page.screenshot({ path: 'error_linkedin.png' });
+      console.log('Saved error screenshot to error_linkedin.png');
+    } catch (screenshotErr) {
+      console.error('Could not take screenshot:', screenshotErr);
+    }
     result = { success: false, message: err.message };
   } finally {
     // If the application was successful, we close the page, else keep open for a second
