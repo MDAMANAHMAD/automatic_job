@@ -542,7 +542,13 @@ function App() {
                         Finish Login
                       </button>
                     ) : (
-                      <button className="btn btn-secondary" style={{ flex: 1, padding: '8px' }} onClick={() => handleLaunchSessionHelper(p)}>
+                      <button 
+                        className="btn btn-secondary" 
+                        style={{ flex: 1, padding: '8px' }} 
+                        onClick={() => handleLaunchSessionHelper(p)}
+                        disabled={runnerState.isRunning}
+                        title={runnerState.isRunning ? "Cannot launch login helper while automation engine is active" : ""}
+                      >
                         Launch Login Helper
                       </button>
                     )}
